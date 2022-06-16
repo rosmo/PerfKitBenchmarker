@@ -36,7 +36,7 @@ import posixpath
 import re
 import threading
 import time
-from typing import Dict, Set
+from typing import Dict, Optional, Set
 import uuid
 
 from absl import flags
@@ -741,7 +741,7 @@ class BaseLinuxMixin(virtual_machine.BaseOsMixin):
             self.RemoteCommand('cat /proc/cmdline')[0].strip())
 
   @property
-  def cpu_arch(self):
+  def cpu_arch(self) -> Optional[str]:
     """Returns the CPU architecture of the VM."""
     return (self.os_metadata.get('cpu_arch') or
             self.RemoteCommand('uname -m')[0].strip())
