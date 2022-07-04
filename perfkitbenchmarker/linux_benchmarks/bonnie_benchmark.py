@@ -90,6 +90,58 @@ BONNIE_RESULTS_MAPPING = {
     'ran_stat_latency': 46,
     'ran_del_latency': 47}
 
+BONNIE_RESULTS_MAPPING_NEW = {
+    'format_version': 0,
+    'bonnie_version': 1,
+    'name': 2,
+    'concurrency': 3,
+    'seed': 4,
+    'file_size': 5,
+    'chunk_size': 6,
+    'num_seeks': 7,
+    'seek_proc_count': 8,
+    'putc': 9,
+    'putc_cpu': 10,
+    'put_block': 11,
+    'put_block_cpu': 12,
+    'rewrite': 13,
+    'rewrite_cpu': 14,
+    'getc': 15,
+    'getc_cpu': 16,
+    'get_block': 17,
+    'get_block_cpu': 18,
+    'seeks': 19,
+    'seeks_cpu': 20,
+    'num_files': 21,
+    'max_size': 22,
+    'min_size': 23,
+    'num_dirs': 24,
+    'file_chunk_size': 25,
+    'seq_create': 26,
+    'seq_create_cpu': 27,
+    'seq_stat': 28,
+    'seq_stat_cpu': 29,
+    'seq_del': 30,
+    'seq_del_cpu': 31,
+    'ran_create': 32,
+    'ran_create_cpu': 33,
+    'ran_stat': 34,
+    'ran_stat_cpu': 35,
+    'ran_del': 36,
+    'ran_del_cpu': 37,
+    'putc_latency': 38,
+    'put_block_latency': 39,
+    'rewrite_latency': 40,
+    'getc_latency': 41,
+    'get_block_latency': 42,
+    'seeks_latency': 43,
+    'seq_create_latency': 44,
+    'seq_stat_latency': 45,
+    'seq_del_latency': 46,
+    'ran_create_latency': 47,
+    'ran_stat_latency': 48,
+    'ran_del_latency': 49}
+
 
 def GetConfig(user_config):
   return configs.LoadConfig(BENCHMARK_CONFIG, user_config, BENCHMARK_NAME)
@@ -223,10 +275,14 @@ def ParseCSVResults(results):
         If a 4th element is included, it is a dictionary of sample
         metadata.
   """
+  results = results.split(',')
+  if results[BONNIE_RESULTS_MAPPING['format_version']] >= '1.98':
+    BONNIE_RESULTS_MAPPING = BONNIE_RESULTS_MAPPING_NEW
+
   field_index_mapping = {}
   for field, value in six.iteritems(BONNIE_RESULTS_MAPPING):
     field_index_mapping[value] = field
-  results = results.split(',')
+
   assert len(results) == len(BONNIE_RESULTS_MAPPING)
   samples = []
   metadata = {}
